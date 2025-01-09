@@ -29,6 +29,7 @@ void adt(float c, int e, Poli *p);
 float valor(Poli p, float x);
 Poli derivada(Poli p);
 void destroip(Poli *p);
+Poli sum_base(Poli Q, Poli P);
 Poli sum(Poli Q, Poli P);
 
 #endif

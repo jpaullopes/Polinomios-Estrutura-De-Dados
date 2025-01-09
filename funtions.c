@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "head.h"
 
 // Função para criar um novo nó
@@ -111,8 +112,8 @@ void destroip(Poli *p) {
     *p = NULL;
 }
 
-//função da questao
-Poli sum(Poli Q, Poli P){
+//funcao da questão também mas com a diferença de que ela não cria um polinomio vazio e sim um NULL
+Poli sum_base(Poli Q, Poli P){
     Poli R = NULL; 
     while(Q != NULL){ // Enquanto Q não for nulo
         adt(Q->coef, Q->expo, &R); // Adiciona o termo de Q em R
@@ -122,5 +123,22 @@ Poli sum(Poli Q, Poli P){
         adt(P->coef, P->expo, &R); // Adiciona o termo de P em R
         P = P->prox; //P avança
     }
+    return R;
+}
+
+//função da questao
+Poli sum(Poli Q, Poli P){
+    Poli R = termo(0, -1, NULL); // Cria um polinômio vazio
+    Poli cabeca = R; 
+    while(Q != NULL){ // Enquanto Q não for nulo
+        adt(Q->coef, Q->expo, &R); // Adiciona o termo de Q em R
+        Q = Q->prox;
+    }
+    while(P != NULL){
+        adt(P->coef, P->expo, &R); // Adiciona o termo de P em R
+        P = P->prox; //P avança
+    }
+    R = cabeca->prox; 
+    free(cabeca); 
     return R;
 }

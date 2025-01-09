@@ -43,27 +43,19 @@ Um polinômio é, portanto, uma lista de termos onde cada termo é um nó com um
 
 A função `sum` realiza a soma de dois polinômios representados por listas encadeadas. A função recebe dois polinômios, `P` e `Q`, como parâmetros e retorna um novo polinômio `R` que é a soma dos dois.
 
-### Implementação da Função `sum`
+### Implementação da Função `sum_base`
 
 ```c
-Poli sum(Poli P, Poli Q) {
-    Poli R = termo(0, -1, NULL); // Inicializa R com um nó cabeça (coeficiente 0, expoente -1)
-    Poli cabeca = R; // Ponteiro auxiliar para guardar a referência ao nó cabeça
-
-    while (P != NULL) {
-        adt(P->coef, P->expo, &R);
-        P = P->prox;
-    }
-
-    while (Q != NULL) {
-        adt(Q->coef, Q->expo, &R);
+Poli sum_base(Poli Q, Poli P){
+    Poli R = NULL; 
+    while(Q != NULL){ // Enquanto Q não for nulo
+        adt(Q->coef, Q->expo, &R); // Adiciona o termo de Q em R
         Q = Q->prox;
     }
-
-    // Remove o nó cabeça
-    R = R->prox;
-    free(cabeca);
-
+    while(P != NULL){
+        adt(P->coef, P->expo, &R); // Adiciona o termo de P em R
+        P = P->prox; //P avança
+    }
     return R;
 }
 ```
@@ -73,16 +65,13 @@ Poli sum(Poli P, Poli Q) {
 *   **Entrada:** Dois polinômios, `P` e `Q`, representados como listas encadeadas de termos.
 *   **Saída:** Um novo polinômio `R` que representa a soma de `P` e `Q`.
 *   **Processo:**
-    1. **Inicialização:** Um novo polinômio `R` é criado com um **nó cabeça** (coeficiente 0, expoente -1). Um ponteiro auxiliar `cabeca` é usado para guardar a referência ao nó cabeça, para que ele possa ser removido posteriormente.
+    1. **Inicialização:** Um novo polinômio `R` é criado como NULL.
     2. **Iteração sobre P:** A função percorre cada termo do polinômio `P`. Para cada termo, a função `adt` é chamada para adicionar o termo ao polinômio `R`.
     3. **Iteração sobre Q:** A função percorre cada termo do polinômio `Q`. Para cada termo, a função `adt` é chamada para adicionar o termo ao polinômio `R`.
-    4. **Remoção do Nó Cabeça:** O nó cabeça, que foi usado para simplificar a lógica de inserção, é removido. O ponteiro `R` é atualizado para apontar para o primeiro termo válido do polinômio resultante.
-    5. **Retorno:** A função retorna o polinômio resultante `R`.
+    4. **Retorno:** A função retorna o polinômio resultante `R`.
 
 ### Considerações Importantes
 
-*   **Nó Cabeça:** A utilização de um nó cabeça com expoente -1 simplifica a lógica da função `adt`, pois garante que qualquer termo válido adicionado terá um expoente maior que o do nó cabeça. Isso evita a necessidade de tratar casos especiais para inserção no início da lista e garante que os termos sejam mantidos em ordem decrescente de expoente.
-*   **Inicialização de `R`:** Inicializar `R` com um nó cabeça é a abordagem preferida em vez de `NULL`. Isso torna o código mais consistente, robusto e extensível a possíveis modificações futuras na função `adt`.
 *   **Função `adt`:** A função `adt` é responsável por adicionar um termo a um polinômio existente, mantendo a ordenação correta dos termos por expoente e simplificando termos com o mesmo expoente.
 
 ## Outras Funções do Projeto
@@ -95,7 +84,7 @@ O projeto também inclui outras funções para manipulação de polinômios, com
 *   **`valor(Poli p, float x)`:** Avalia um polinômio `p` para um dado valor de `x`.
 *   **`derivada(Poli p)`:** Calcula a derivada de um polinômio `p`.
 *   **`destroip(Poli *p)`:** Libera a memória alocada para um polinômio `p`.
-*   **`Poli sum_base(Poli Q, Poli P)`:** Faz a mesma coisa que a `sum(Poli P, Poli Q)` mas sem criar um polinômio vazio, e sim um NULL.
+*   **`Poli sum(Poli Q, Poli P)`:** Faz a mesma coisa que a `sum_base(Poli P, Poli Q)` mas cria um polinômio vazio, e não um NULL.
 ## Exemplo de Uso (`main.c`)
 
 ```c
@@ -117,7 +106,7 @@ int main() {
     printf("\n");
 
     // Soma dos polinômios
-    Poli R = sum(P, Q);
+    Poli R = sum_base(P, Q);
     printf("Polinomio R (P + Q): ");
     exibep(R);
     printf("\n");
@@ -144,4 +133,4 @@ int main() {
 
 ## Conclusão
 
-Este projeto fornece uma implementação robusta e eficiente para manipulação de polinômios usando listas encadeadas em C. A utilização de um nó cabeça na função `sum` simplifica a lógica de adição de termos e garante a ordenação correta dos termos no polinômio resultante. As funções fornecidas permitem criar, exibir, adicionar termos, avaliar, derivar e destruir polinômios, tornando-o uma ferramenta útil para diversas aplicações matemáticas e computacionais.
+Este projeto fornece uma implementação robusta e eficiente para manipulação de polinômios usando listas encadeadas em C. As funções fornecidas permitem criar, exibir, adicionar termos, avaliar, derivar e destruir polinômios, tornando-o uma ferramenta útil para diversas aplicações matemáticas e computacionais.

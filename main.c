@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "head.h"
 
 int main() {
@@ -16,7 +18,7 @@ int main() {
     printf("\n");
 
     // Soma dos polinômios
-    Poli R = sum(P, Q);
+    Poli R = sum_base(P, Q);
     printf("Polinomio R (P + Q): ");
     exibep(R);
     printf("\n");
